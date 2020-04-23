@@ -40,9 +40,14 @@
       </el-table-column>
       <el-table-column
         prop=""
+        label="得分">
+      </el-table-column>
+      <el-table-column
+        prop=""
         label="评审情况">
         <template slot-scope="scope">
           <PublicButton @clickHandle="setSource(scope.row)">评分</PublicButton>
+          <PublicButton @clickHandle="pass(scope.row)">通过</PublicButton>
         </template>
       </el-table-column>
     </el-table>
@@ -76,6 +81,10 @@ export default {
         path: '/works/desc',
         query: {}
       })
+    },
+    // 通过
+    pass (row) {
+      console.log('通过:', row)
     },
     // 获取页面数据
     getData () {
