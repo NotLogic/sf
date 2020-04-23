@@ -22,10 +22,6 @@ export default {
         {
           path: '/works/list',
           title: '作品列表'
-        },
-        {
-          path: '/works/desc',
-          title: '作品评价'
         }
       ]
     }

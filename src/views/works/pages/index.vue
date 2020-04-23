@@ -24,6 +24,10 @@
       </el-table-column>
       <el-table-column
         prop=""
+        label="方向">
+      </el-table-column>
+      <el-table-column
+        prop=""
         label="命题">
       </el-table-column>
       <el-table-column
@@ -37,13 +41,20 @@
       <el-table-column
         prop=""
         label="评审情况">
+        <template slot-scope="scope">
+          <PublicButton @clickHandle="setSource(scope.row)">评分</PublicButton>
+        </template>
       </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
+import PublicButton from '@/components/public_button.vue'
 export default {
+  components: {
+    PublicButton
+  },
   data () {
     return {
       activeType: '0',
@@ -54,11 +65,23 @@ export default {
     this.getData()
   },
   methods: {
+    // 切换赛事类型
     handleClick (e) {
       this.activeType = e.name
     },
+    // 点击评分
+    setSource (row) {
+      console.log('row:', row)
+      this.$router.push({
+        path: '/works/desc',
+        query: {}
+      })
+    },
+    // 获取页面数据
     getData () {
-      const tableData = []
+      const tableData = [
+        {}
+      ]
       this.tableData = tableData
     }
   }
