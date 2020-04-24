@@ -2,8 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import '@/utils/http.js'
 import '@/config/framework'
+import '@/utils/http.js'
 // 混入
 import mixin from '@/mixin/index'
 Vue.mixin(mixin)

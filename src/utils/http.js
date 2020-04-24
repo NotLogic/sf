@@ -5,8 +5,8 @@ import {
 } from 'element-ui'
 
 // export const BASE_URL = 'http://47.103.28.48:8080/match-service'
-// export const BASE_URL = 'https://sf.shangzhaopin.com/match-service'
-export const BASE_URL = location.origin + '/match-service'
+export const BASE_URL = 'https://sf.shangzhaopin.com/match-service'
+// export const BASE_URL = location.origin + '/match-service'
 // export const BASE_URL = 'http://192.168.1.222:8080/match-service'
 axios.defaults.baseURL = BASE_URL
 
