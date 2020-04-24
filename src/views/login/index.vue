@@ -87,6 +87,7 @@ export default {
         const res = await this.POST_LOGIN(this.loginForm)
         if (res.result === '0' && res.data) {
           this.$router.push('/works/admin')
+          sessionStorage.setItem('adminInfo', JSON.stringify(res.data))
         }
       }
       // 验证码登录
@@ -94,6 +95,7 @@ export default {
         const res = await this.POST_CODE_LOGIN(this.loginForm)
         if (res.result === '0' && res.data) {
           this.$router.push('/works/admin')
+          sessionStorage.setItem('adminInfo', JSON.stringify(res.data))
         }
       }
     }

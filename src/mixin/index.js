@@ -15,6 +15,11 @@ export default {
       code = Number(code)
       const arr = jsonData.filter((val) => code === val.code)
       return arr[0].matchZone
+    },
+    // 获取信息
+    getAdminInfo () {
+      const adminInfo = sessionStorage.getItem('adminInfo')
+      return adminInfo ? JSON.parse(adminInfo) : {}
     }
   }
 }

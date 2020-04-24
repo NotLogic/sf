@@ -31,6 +31,16 @@ export default new Vuex.Store({
     async GET_TEAM_LIST ({ commit }, data = {}) {
       const { data: res } = await axios.get(`/admin/team/page?pageNo=${data.pageNo}&pageSize=${data.pageSize}&teamProgress=${data.teamProgress}`)
       return res
+    },
+    // 评委修改密码
+    async PUT_MOIDIFY_PASSWORD ({ commit }, data = {}) {
+      const { data: res } = await axios.put(`/judge/password?password=${data.password}`)
+      return res
+    },
+    // 管理员修改密码
+    async PUT_ADMIN_MOIDIFY_PASSWORD ({ commit }, data = {}) {
+      const { data: res } = await axios.put(`/admin/password?password=${data.password}`)
+      return res
     }
   },
   modules: {
