@@ -4,6 +4,7 @@ const Login = () => import(/* webpackChunkName: "login" */ '../views/login/index
 const Works = () => import(/* webpackChunkName: "works" */ '../views/works/index.vue')
 const WorksList = () => import(/* webpackChunkName: "works" */ '../views/works/pages/index.vue')
 const WorksDesc = () => import(/* webpackChunkName: "works" */ '../views/works/pages/desc.vue')
+const WorksAdmin = () => import(/* webpackChunkName: "works" */ '../views/works/pages/admin.vue')
 Vue.use(VueRouter)
 
 const routes = [
@@ -24,6 +25,10 @@ const routes = [
       {
         path: 'desc',
         component: WorksDesc
+      },
+      {
+        path: 'admin',
+        component: WorksAdmin
       }
     ]
   },
