@@ -16,15 +16,20 @@
           <div class="form_label">验证码</div>
           <div class="form_content code_container">
             <div class="code_input_container">
-              <el-input v-model="loginForm.phone"></el-input>
+              <el-input v-model="loginForm.verificationCode"></el-input>
             </div>
-            <el-button class="code_btn">获取验证码</el-button>
+            <el-button class="code_btn"
+              @click="sendLoginCode"
+              :disabled="loginCode !== num">
+              <span v-if="loginCode === num">发送验证码</span>
+              <span v-else>{{loginCode}}</span>
+            </el-button>
           </div>
         </div>
         <div class="form_item"  v-if="activeType === '1'">
           <div class="form_label">密码</div>
           <div class="form_content">
-            <el-input v-model="loginForm.phone"></el-input>
+            <el-input v-model="loginForm.password" type="password"></el-input>
           </div>
         </div>
       </el-form>
@@ -37,6 +42,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -45,17 +51,67 @@ export default {
       // 登录表单
       loginForm: {
         phone: '',
-        code: '',
+        verificationCode: '',
         password: ''
-      }
+      },
+      // 倒计时秒数
+      num: 60,
+      // 获取验证码倒计时
+      loginCode: 60,
+      timer: null
     }
   },
   methods: {
+    ...mapActions(['login', 'POST_GET_CODE', 'POST_REGISTRY', 'LOGIN_CODE', 'CODE_LOGIN']),
     handleClick (e) {
       this.activeType = e.name
     },
-    submitLogin () {
-      this.$router.push('/works/list')
+    // 登录
+    async submitLogin () {
+      if (!this.validatePhone(this.loginForm.phone)) {
+        this.$message.error('请输入正确的手机号码')
+        return
+      }
+      if (this.activeType === '0') {
+        if (!this.loginForm.verificationCode) {
+          this.$message.error('请输入验证码')
+          return
+        }
+      } else if (this.activeType === '1') {
+        if (!this.loginForm.password) {
+          this.$message.error('请输入密码')
+          return
+        }
+      }
+      const res = this.activeType === '1' ? await this.login(this.loginForm) : await this.CODE_LOGIN(this.loginForm)
+      if (res.result === '0') {
+        sessionStorage.setItem('userInfo', JSON.stringify(res.data))
+        this.$router.push('/works/list')
+      }
+    },
+    // 获取验证码
+    async sendLoginCode () {
+      if (this.loginCode === this.num && !this.timer) {
+        if (!this.validatePhone(this.loginForm.phone)) {
+          this.$message.error('请输入正确的手机号码')
+          return
+        }
+        const res = await this.LOGIN_CODE({
+          phone: this.loginForm.phone
+        })
+        if (res.result === '0' && res.data) {
+          this.$message.success('发送成功')
+          this.timer = setInterval(() => {
+            if (this.loginCode === 0) {
+              clearInterval(this.timer)
+              this.loginCode = this.num
+              return
+            }
+            this.loginCode--
+            console.log(this.loginCode)
+          }, 1000)
+        }
+      }
     }
   }
 }
@@ -90,6 +146,7 @@ export default {
           // 获取验证码按钮
           .code_btn {
             margin-left: 10px;
+            min-width: 100px;
           }
         }
       }
