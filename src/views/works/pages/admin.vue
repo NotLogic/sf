@@ -1,6 +1,10 @@
 <template>
   <div class="works_list_container">
     <!-- <div class="page_title">评委审核功能</div> -->
+    <div v-if="userInfo.superAdmin === 1" class="down_list">
+      <el-button @click="downloadAccount" type="primary">下载注册列表<i class="el-icon-download el-icon--right"></i></el-button>
+      <el-button @click="downloadTeamList" type="primary">下载队伍列表<i class="el-icon-download el-icon--right"></i></el-button>
+    </div>
     <div class="filter_container">
       <el-tabs v-model="activeType" @tab-click="handleClick">
         <el-tab-pane label="初筛" name="0"></el-tab-pane>
@@ -8,8 +12,9 @@
         <el-tab-pane label="决赛" name="2"></el-tab-pane>
       </el-tabs>
     </div>
-    <el-table :data="tableData"
-      border>
+    <el-table
+      :data="tableData"
+      stripe>
       <el-table-column
         prop="teamNo"
         label="#">
@@ -81,6 +86,7 @@
 <script>
 import { mapActions } from 'vuex'
 import PublicButton from '@/components/public_button.vue'
+import { BASE_URL } from '@/utils/http.js'
 export default {
   components: {
     PublicButton
@@ -94,14 +100,22 @@ export default {
         teamProgress: 0
       },
       pageData: {},
-      tableData: []
+      tableData: [],
+      userInfo: {}
     }
   },
   created () {
+    this.userInfo = JSON.parse(sessionStorage.getItem('adminInfo'))
     this.getData()
   },
   methods: {
-    ...mapActions(['GET_TEAM_LIST']),
+    ...mapActions(['GET_TEAM_LIST', 'GET_ACCOUNT_LIST']),
+    async downloadAccount () {
+      window.open(`${BASE_URL}/admin/account/dowload`)
+    },
+    async downloadTeamList () {
+      window.open(`${BASE_URL}/admin/team/dowload`)
+    },
     // 切换分页
     pageChange (data) {
       this.pageForm.pageNo = data
@@ -143,7 +157,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.works_list_container {}
+.works_list_container {
+  .down_list {
+    margin-bottom: 20px;
+  }
+}
 </style>
 
 <style lang="scss">
@@ -155,5 +173,9 @@ export default {
   }
   .el-table .cell {
     white-space: nowrap;
+  }
+  .el-pagination {
+    margin-top: 20px;
+    text-align: right;
   }
 </style>

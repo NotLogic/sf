@@ -41,6 +41,11 @@ export default new Vuex.Store({
     async PUT_ADMIN_MOIDIFY_PASSWORD ({ commit }, data = {}) {
       const { data: res } = await axios.put(`/admin/password?password=${data.password}`)
       return res
+    },
+    // 下载学生账号
+    async GET_ACCOUNT_LIST ({ commit }, data = {}) {
+      const { data: res } = await axios.get('/admin/account/dowload')
+      return res
     }
   },
   modules: {

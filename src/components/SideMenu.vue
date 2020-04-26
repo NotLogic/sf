@@ -18,12 +18,26 @@
 export default {
   data () {
     return {
-      menuData: [
-        {
-          path: '/works/list',
-          title: '作品列表'
-        }
-      ]
+    }
+  },
+  computed: {
+    menuData () {
+      const userInfo = JSON.parse(sessionStorage.getItem('adminInfo'))
+      if (userInfo.superAdmin !== undefined) {
+        return [
+          {
+            path: '/works/admin',
+            title: '作品列表'
+          }
+        ]
+      } else {
+        return [
+          {
+            path: '/works/list',
+            title: '作品列表'
+          }
+        ]
+      }
     }
   }
 }
