@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { BASE_URL } from '@/utils/http'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -46,6 +47,11 @@ export default new Vuex.Store({
     async GET_ACCOUNT_LIST ({ commit }, data = {}) {
       const { data: res } = await axios.get('/admin/account/dowload')
       return res
+    },
+    // 下载附件
+    async GET_DOWN_FILE ({ commit }, attachmentId = 0) {
+      const url = '/admin/team/dowload/attachment'
+      window.open(`${BASE_URL}${url}?attachmentId=${attachmentId}`)
     }
   },
   modules: {

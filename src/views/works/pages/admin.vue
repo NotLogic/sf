@@ -31,8 +31,12 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop=""
         label="作品名称">
+        <template slot-scope="scope">
+          <el-tooltip :content="scope.row.opusName" placement="top">
+            <span style="color: #33394E">{{scope.row.opusName}}</span>
+          </el-tooltip>
+        </template>
       </el-table-column>
       <el-table-column
         prop="directionName"
@@ -58,6 +62,15 @@
       <el-table-column
         prop=""
         label="作品附件">
+        <template slot-scope="scope">
+          <div>
+            <p v-for="(item, index) in scope.row.attachments" :key="index">
+              <el-tooltip :content="item.attachmentFileName" placement="top">
+                <span @click="getFileDown(item.attachmentId)">{{item.attachmentFileName}}</span>
+              </el-tooltip>
+            </p>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column
         label="得分">
@@ -109,7 +122,10 @@ export default {
     this.getData()
   },
   methods: {
-    ...mapActions(['GET_TEAM_LIST', 'GET_ACCOUNT_LIST']),
+    ...mapActions(['GET_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    async getFileDown (attachmentId) {
+      await this.GET_DOWN_FILE(attachmentId)
+    },
     async downloadAccount () {
       window.open(`${BASE_URL}/admin/account/dowload`)
     },
@@ -177,5 +193,14 @@ export default {
   .el-pagination {
     margin-top: 20px;
     text-align: right;
+  }
+  span.el-tooltip {
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    color: #409EFF;
   }
 </style>
