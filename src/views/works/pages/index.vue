@@ -76,7 +76,7 @@
         prop=""
         label="评审">
         <template slot-scope="scope">
-          <PublicButton @clickHandle="setSource(scope.row)">评审</PublicButton>
+          <PublicButton :class="[scope.row.judgeScoreState === 1 && 'gray_color']" @clickHandle="setSource(scope.row)">评审</PublicButton>
         </template>
       </el-table-column>
     </el-table>
@@ -176,6 +176,9 @@ export default {
 .works_list_container {
   .down_list {
     margin-bottom: 20px;
+  }
+  .gray_color {
+    background-color: #4a3636;
   }
 }
 </style>

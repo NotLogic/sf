@@ -224,6 +224,7 @@ export default {
       const res = await this.POST_JUDGE_SCORE(params)
       if (res.result === '0' && res.data) {
         this.$message.success(res.msg)
+        this.$router.push('list')
       }
       console.log(res, '评分结果')
       // this.$router.push('/works/list')
