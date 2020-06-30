@@ -33,7 +33,7 @@ const routes = [
         component: WorksDesc
       },
       {
-        path: 'admin',
+        path: 'teamList',
         component: WorksAdmin
       }
     ]

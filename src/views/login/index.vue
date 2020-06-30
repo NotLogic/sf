@@ -86,7 +86,7 @@ export default {
       if (this.activeType === '0') {
         const res = await this.POST_LOGIN(this.loginForm)
         if (res.result === '0' && res.data) {
-          this.$router.push('/works/admin')
+          this.$router.push('/works/teamList')
           sessionStorage.setItem('adminInfo', JSON.stringify(res.data))
         }
       }
@@ -94,7 +94,7 @@ export default {
       if (this.activeType === '1') {
         const res = await this.POST_CODE_LOGIN(this.loginForm)
         if (res.result === '0' && res.data) {
-          this.$router.push('/works/admin')
+          this.$router.push('/works/teamList')
           sessionStorage.setItem('adminInfo', JSON.stringify(res.data))
         }
       }

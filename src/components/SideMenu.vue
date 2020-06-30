@@ -26,7 +26,7 @@ export default {
       if (userInfo.superAdmin !== undefined) {
         return [
           {
-            path: '/works/admin',
+            path: '/works/teamList',
             title: '作品列表'
           }
         ]
