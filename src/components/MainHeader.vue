@@ -46,8 +46,9 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     this.adminInfo = this.getAdminInfo()
+    this.isAdmin = this.adminInfo.superAdmin === 1
   },
   methods: {
     ...mapActions(['PUT_MOIDIFY_PASSWORD', 'PUT_ADMIN_MOIDIFY_PASSWORD']),

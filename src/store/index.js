@@ -18,9 +18,19 @@ export default new Vuex.Store({
       const { data: res } = await axios.post(`/adminLogin?username=${data.phone}&password=${data.password}`)
       return res
     },
+    // 评委账号登录
+    async POST_JUDGE_LOGIN ({ commit }, data = {}) {
+      const { data: res } = await axios.post(`/judgeLogin?username=${data.phone}&password=${data.password}`)
+      return res
+    },
     // 验证码登录
     async POST_CODE_LOGIN ({ commit }, data = {}) {
       const { data: res } = await axios.post(`/adminLoginCode?username=${data.phone}&code=${data.code}`)
+      return res
+    },
+    // 验证码登录
+    async POST_JUDGE_CODE_LOGIN ({ commit }, data = {}) {
+      const { data: res } = await axios.post(`/judgeLoginCode?username=${data.phone}&code=${data.code}`)
       return res
     },
     // 获取验证码
@@ -52,6 +62,25 @@ export default new Vuex.Store({
     async GET_DOWN_FILE ({ commit }, attachmentId = 0) {
       const url = '/admin/team/dowload/attachment'
       window.open(`${BASE_URL}${url}?attachmentId=${attachmentId}`)
+    },
+    async GET_JUDGE_DOWN_FILE ({ commit }, attachmentId = 0) {
+      const url = '/judge/team/dowload/attachment'
+      window.open(`${BASE_URL}${url}?attachmentId=${attachmentId}`)
+    },
+    // 评委获取队伍列表
+    async GET_JUDGE_TEAM_LIST ({ commit }, data = {}) {
+      const { data: res } = await axios.get(`/judge/team/page?pageNo=${data.pageNo}&pageSize=${data.pageSize}&teamProgress=${data.teamProgress}`)
+      return res
+    },
+    // 评委查询队伍评分详情
+    async GET_JUDGE_TEAM_DETAIL ({ commit }, data = {}) {
+      const { data: res } = await axios.get(`/judge/team/score?teamNo=${data.teamNo}&teamProgress=${data.teamProgress}`)
+      return res
+    },
+    // 评委评分
+    async POST_JUDGE_SCORE ({ commit }, data = {}) {
+      const { data: res } = await axios.post(`/judge/team/score?comments=${data.comments}&teamNo=${data.teamNo}&totalScore=${data.totalScore}`, data.scoreDimensions)
+      return res
     }
   },
   modules: {

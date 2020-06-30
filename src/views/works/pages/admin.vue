@@ -75,7 +75,7 @@
       <el-table-column
         label="得分">
         <template slot-scope="scope">
-          <span>{{scope.row.totalScore || '---'}}</span>
+          <span>{{scope.row.totalScore / 100 || '---'}}</span>
         </template>
       </el-table-column>
       <el-table-column
