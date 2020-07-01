@@ -240,6 +240,9 @@ export default {
 
 <style lang="scss" scoped>
 .works_desc_container {
+  .submit_btn_container {
+    text-align: right;
+  }
   .red_color {
     color: #dc1e32;
   }
