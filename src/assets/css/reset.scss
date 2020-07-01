@@ -65,4 +65,20 @@
     fill: currentColor;
     overflow: hidden;
   }
-  
+  body .el-table th.gutter {
+    display: table-cell !important;
+  }
+
+  body .el-table colgroup.gutter {
+    display: table-cell !important;
+  }
+
+  table {
+    width: 100% !important;
+  }
+
+  .el-table__body {
+    // 使表格兼容safari，不错位
+    width: 100%;
+    table-layout: fixed !important;
+  }

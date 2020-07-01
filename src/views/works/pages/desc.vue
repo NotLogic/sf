@@ -187,7 +187,7 @@ export default {
     // 提交
     async submit () {
       if (!this.integrity) {
-        this.$message.error('请填写创新性评分')
+        this.$message.error('请填写方案完整性评分')
         return
       }
       if (!this.effect) {

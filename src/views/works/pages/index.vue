@@ -13,11 +13,12 @@
       </el-tabs>
     </div>
     <el-table
+      width="100%"
       :data="tableData"
       stripe>
       <el-table-column
         prop="teamNo"
-        label="#">
+        label="队伍编号">
       </el-table-column>
       <el-table-column
         label="队伍名称">
