@@ -38,9 +38,21 @@ export default new Vuex.Store({
       const { data: res } = await axios.get(`/login/code?phone=${phone}`)
       return res
     },
+    // 管理员修改流程
+    async PUT_EDIT_PROCESS ({ commit }, data = {}) {
+      const { data: res } = await axios.put(`/admin/team/teamProgress?teamProgress=${data.teamProgress}&teamNo=${data.teamNo}`)
+      return res
+    },
     // 队伍列表
     async GET_TEAM_LIST ({ commit }, data = {}) {
-      const { data: res } = await axios.get(`/admin/team/page?pageNo=${data.pageNo}&pageSize=${data.pageSize}&teamProgress=${data.teamProgress}`)
+      let str = ''
+      for (var i in data) {
+        if (data[i] !== null) {
+          str += `${i}=${data[i]}&`
+        }
+      }
+      str = str.substring(0, str.length - 1)
+      const { data: res } = await axios.get(`/admin/team/page?${str}`)
       return res
     },
     // 评委修改密码
@@ -69,7 +81,14 @@ export default new Vuex.Store({
     },
     // 评委获取队伍列表
     async GET_JUDGE_TEAM_LIST ({ commit }, data = {}) {
-      const { data: res } = await axios.get(`/judge/team/page?pageNo=${data.pageNo}&pageSize=${data.pageSize}&teamProgress=${data.teamProgress}`)
+      let str = ''
+      for (var i in data) {
+        if (data[i] !== null) {
+          str += `${i}=${data[i]}&`
+        }
+      }
+      str = str.substring(0, str.length - 1)
+      const { data: res } = await axios.get(`/judge/team/page?${str}`)
       return res
     },
     // 评委查询队伍评分详情
@@ -80,6 +99,10 @@ export default new Vuex.Store({
     // 评委评分
     async POST_JUDGE_SCORE ({ commit }, data = {}) {
       const { data: res } = await axios.post(`/judge/team/score?comments=${data.comments}&teamNo=${data.teamNo}&totalScore=${data.totalScore}`, data.scoreDimensions)
+      return res
+    },
+    async GET_CATEGORYS ({ commit }, data = {}) {
+      const { data: res } = await axios.get('/user/direction')
       return res
     }
   },

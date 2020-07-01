@@ -87,7 +87,7 @@
         <div class="score_item">
           <div class="source_left"></div>
           <div class="source_right">
-            <el-input v-model="score" placeholder="综合评分"></el-input>
+            <el-input :disabled="true" v-model="score" placeholder="综合评分"></el-input>
           </div>
         </div>
       </div>
@@ -113,7 +113,8 @@
         }"></el-input>
     </div> -->
     <div class="submit_btn_container">
-      <el-button @click="submit">提交</el-button>
+      <el-button @click="$router.go(-1)">返回</el-button>
+      <el-button type="primary" @click="submit">提交</el-button>
     </div>
   </div>
 </template>
@@ -191,19 +192,19 @@ export default {
         return
       }
       if (!this.effect) {
-        this.$message.error('请填写实用性评分')
+        this.$message.error('请填写数据有效性')
         return
       }
       if (!this.scientificity) {
-        this.$message.error('请填写安全性评分')
+        this.$message.error('请填写方案设计科学性')
         return
       }
       if (!this.practicability) {
-        this.$message.error('请填写通用性评分')
+        this.$message.error('请填写方案实用性')
         return
       }
       if (!this.innovation) {
-        this.$message.error('请填写潜在价值评分')
+        this.$message.error('请填写方案创新性')
         return
       }
       const arr = ['integrity', 'effect', 'scientificity', 'practicability', 'innovation']

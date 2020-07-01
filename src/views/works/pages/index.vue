@@ -5,7 +5,48 @@
       <el-button @click="downloadAccount" type="primary">下载注册列表<i class="el-icon-download el-icon--right"></i></el-button>
       <el-button @click="downloadTeamList" type="primary">下载队伍列表<i class="el-icon-download el-icon--right"></i></el-button>
     </div>
-    <div class="filter_container">
+    <div class="filter_contain">
+      <p>
+        <span>编号：</span>
+        <el-input v-model="pageForm.teamNo" size="mini"></el-input>
+      </p>
+      <p>
+        <span>方向：</span>
+        <el-select size="mini" v-model="pageForm.directionId" placeholder="请选择">
+          <el-option
+            v-for="item in directArr"
+            :key="item.directionName + '1'"
+            :label="item.directionName"
+            :value="item.directionId">
+          </el-option>
+        </el-select>
+      </p>
+      <p>
+        <span>课题：</span>
+        <el-select size="mini" v-model="pageForm.subjectId" placeholder="请选择">
+          <el-option
+            v-for="item in subjectArr"
+            :key="item.subjectName"
+            :label="item.subjectName"
+            :value="item.subjectId">
+          </el-option>
+        </el-select>
+      </p>
+      <p>
+        <span>赛区：</span>
+        <el-select size="mini" v-model="pageForm.matchZone" placeholder="请选择">
+          <el-option
+            v-for="item in provinceData"
+            :key="item.code"
+            :label="item.matchZone"
+            :value="item.code">
+          </el-option>
+        </el-select>
+      </p>
+      <el-button @click="resetFilter" class="res">重置</el-button>
+      <el-button @click="filterSearch" type="primary">搜索</el-button>
+    </div>
+    <div class="process_banner">
       <el-tabs v-model="activeType" @tab-click="handleClick">
         <el-tab-pane label="初筛" name="0"></el-tab-pane>
         <el-tab-pane label="半决赛" name="1"></el-tab-pane>
@@ -17,10 +58,12 @@
       :data="tableData"
       stripe>
       <el-table-column
+        min-width="5%"
         prop="teamNo"
         label="队伍编号">
       </el-table-column>
       <el-table-column
+        min-width="10%"
         label="队伍名称">
         <template slot-scope="scope">
           <el-popover width="200" trigger="hover" :content="scope.row.teamName" placement="top">
@@ -32,6 +75,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        min-width="10%"
         label="作品名称">
         <template slot-scope="scope">
           <el-tooltip :content="scope.row.opusName" placement="top">
@@ -40,10 +84,12 @@
         </template>
       </el-table-column>
       <el-table-column
+        min-width="7%"
         prop="directionName"
         label="方向">
       </el-table-column>
       <el-table-column
+        min-width="10%"
         label="课题">
         <template slot-scope="scope">
           <el-popover width="200" trigger="hover" :content="scope.row.subjectName" placement="top">
@@ -55,12 +101,14 @@
         </template>
       </el-table-column>
       <el-table-column
+        min-width="5%"
         label="赛区">
         <template slot-scope="scope">
           <span>{{getZone(scope.row.matchZone)}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        min-width="20%"
         prop=""
         label="作品附件">
         <template slot-scope="scope">
@@ -74,6 +122,15 @@
         </template>
       </el-table-column>
       <el-table-column
+        min-width="10%"
+        prop=""
+        label="评分">
+        <template slot-scope="scope">
+          <span>{{scope.row.totalScore / 100}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        min-width="10%"
         prop=""
         label="评审">
         <template slot-scope="scope">
@@ -95,17 +152,27 @@
 import { mapActions } from 'vuex'
 import PublicButton from '@/components/public_button.vue'
 import { BASE_URL } from '@/utils/http.js'
+import provinceData from '@/config/province.js'
 export default {
   components: {
     PublicButton
   },
   data () {
     return {
+      value: '',
+      provinceData,
       activeType: '0',
+      directArr: [],
+      subjectArr: [],
       pageForm: {
+        // todo
         pageSize: 10,
         pageNo: 1,
-        teamProgress: 0
+        teamProgress: 0,
+        directionId: null,
+        matchZone: null,
+        subjectId: null,
+        teamNo: null
       },
       pageData: {},
       tableData: [],
@@ -115,9 +182,10 @@ export default {
   created () {
     this.userInfo = JSON.parse(sessionStorage.getItem('adminInfo'))
     this.getData()
+    this.getCategory()
   },
   methods: {
-    ...mapActions(['GET_JUDGE_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    ...mapActions(['GET_CATEGORYS', 'GET_JUDGE_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
     async getFileDown (attachmentId) {
       await this.GET_DOWN_FILE(attachmentId)
     },
@@ -127,6 +195,28 @@ export default {
     async downloadTeamList () {
       window.open(`${BASE_URL}/admin/team/dowload`)
     },
+    // 获取类目
+    async getCategory () {
+      const res = await this.GET_CATEGORYS()
+      if (res.result === '0' && res.data) {
+        this.directArr = res.data
+        res.data.map(item => {
+          this.subjectArr = this.subjectArr.concat(item.subjects)
+        })
+      }
+    },
+    resetFilter () {
+      this.pageForm.directionId = null
+      this.pageForm.matchZone = null
+      this.pageForm.subjectId = null
+      this.pageForm.teamNo = null
+    },
+    // 搜索
+    filterSearch () {
+      // todo
+      this.pageForm.pageNo = 1
+      this.getData()
+    },
     // 切换分页
     pageChange (data) {
       this.pageForm.pageNo = data
@@ -134,10 +224,15 @@ export default {
     },
     // 切换赛事类型
     handleClick (e) {
+      // todo
       this.pageForm = {
         pageSize: 10,
         pageNo: 1,
-        teamProgress: e.name
+        teamProgress: e.name,
+        directionId: null,
+        matchZone: null,
+        subjectId: null,
+        teamNo: null
       }
       this.activeType = e.name
       this.getData()
@@ -175,6 +270,12 @@ export default {
 
 <style lang="scss" scoped>
 .works_list_container {
+  .filter_contain{
+    display: flex;
+    p {
+      width: 20%;
+    }
+  }
   .down_list {
     margin-bottom: 20px;
   }
@@ -206,5 +307,15 @@ export default {
     white-space: nowrap;
     cursor: pointer;
     color: #409EFF;
+  }
+  .filter_contain {
+    p {
+      .el-input--mini, .el-select--mini {
+        width: 70%;
+        .el-input--mini {
+          width: 100%;
+        }
+      }
+    }
   }
 </style>

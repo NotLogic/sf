@@ -5,7 +5,59 @@
       <el-button @click="downloadAccount" type="primary">下载注册列表<i class="el-icon-download el-icon--right"></i></el-button>
       <el-button @click="downloadTeamList" type="primary">下载队伍列表<i class="el-icon-download el-icon--right"></i></el-button>
     </div>
-    <div class="filter_container">
+    <div class="filter_contain">
+      <p>
+        <span>编号：</span>
+        <el-input v-model="pageForm.teamNo" size="mini"></el-input>
+      </p>
+      <p>
+        <span>方向：</span>
+        <el-select size="mini" v-model="pageForm.directionId" placeholder="请选择">
+          <el-option
+            v-for="item in directArr"
+            :key="item.directionName + '1'"
+            :label="item.directionName"
+            :value="item.directionId">
+          </el-option>
+        </el-select>
+      </p>
+      <p>
+        <span>课题：</span>
+        <el-select size="mini" v-model="pageForm.subjectId" placeholder="请选择">
+          <el-option
+            v-for="item in subjectArr"
+            :key="item.subjectName"
+            :label="item.subjectName"
+            :value="item.subjectId">
+          </el-option>
+        </el-select>
+      </p>
+      <p>
+        <span>赛区：</span>
+        <el-select size="mini" v-model="pageForm.matchZone" placeholder="请选择">
+          <el-option
+            v-for="item in provinceData"
+            :key="item.code"
+            :label="item.matchZone"
+            :value="item.code">
+          </el-option>
+        </el-select>
+      </p>
+      <p>
+        <span>队伍：</span>
+        <el-select size="mini" v-model="pageForm.status" placeholder="请选择">
+          <el-option
+            v-for="item in workOption"
+            :key="item.label"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </p>
+      <el-button @click="resetFilter" class="res">重置</el-button>
+      <el-button @click="filterSearch" type="primary">搜索</el-button>
+    </div>
+    <div class="process_banner">
       <el-tabs v-model="activeType" @tab-click="handleClick">
         <el-tab-pane label="初筛" name="0"></el-tab-pane>
         <el-tab-pane label="半决赛" name="1"></el-tab-pane>
@@ -17,7 +69,7 @@
       stripe>
       <el-table-column
         prop="teamNo"
-        label="#">
+        label="队伍编号">
       </el-table-column>
       <el-table-column
         label="队伍名称">
@@ -82,7 +134,7 @@
         prop=""
         label="评审情况">
         <template slot-scope="scope">
-          <PublicButton @clickHandle="pass(scope.row)">通过</PublicButton>
+          <PublicButton v-if="activeType !== '2'" @clickHandle="pass(scope.row)">通过</PublicButton>
         </template>
       </el-table-column>
     </el-table>
@@ -100,17 +152,36 @@
 import { mapActions } from 'vuex'
 import PublicButton from '@/components/public_button.vue'
 import { BASE_URL } from '@/utils/http.js'
+import provinceData from '@/config/province.js'
 export default {
   components: {
     PublicButton
   },
   data () {
     return {
+      provinceData,
       activeType: '0',
+      directArr: [],
+      subjectArr: [],
+      workOption: [
+        {
+          label: '有作品的队伍',
+          value: 123
+        },
+        {
+          label: '所有队伍',
+          value: null
+        }
+      ],
       pageForm: {
         pageSize: 10,
         pageNo: 1,
-        teamProgress: 0
+        teamProgress: 0,
+        directionId: null,
+        matchZone: null,
+        subjectId: null,
+        teamNo: null,
+        status: 123
       },
       pageData: {},
       tableData: [],
@@ -120,9 +191,10 @@ export default {
   created () {
     this.userInfo = JSON.parse(sessionStorage.getItem('adminInfo'))
     this.getData()
+    this.getCategory()
   },
   methods: {
-    ...mapActions(['GET_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    ...mapActions(['PUT_EDIT_PROCESS', 'GET_CATEGORYS', 'GET_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
     async getFileDown (attachmentId) {
       await this.GET_DOWN_FILE(attachmentId)
     },
@@ -132,9 +204,33 @@ export default {
     async downloadTeamList () {
       window.open(`${BASE_URL}/admin/team/dowload`)
     },
+    // 搜索
+    filterSearch () {
+      // todo
+      this.pageForm.pageNo = 1
+      this.getData()
+    },
+    resetFilter () {
+      this.pageForm.directionId = null
+      this.pageForm.matchZone = null
+      this.pageForm.subjectId = null
+      this.pageForm.teamNo = null
+      this.pageForm.status = 123
+    },
+    // 获取类目
+    async getCategory () {
+      const res = await this.GET_CATEGORYS()
+      if (res.result === '0' && res.data) {
+        this.directArr = res.data
+        res.data.map(item => {
+          this.subjectArr = this.subjectArr.concat(item.subjects)
+        })
+      }
+    },
     // 切换分页
     pageChange (data) {
       this.pageForm.pageNo = data
+      this.pageForm.status = 123
       this.getData()
     },
     // 切换赛事类型
@@ -142,7 +238,12 @@ export default {
       this.pageForm = {
         pageSize: 10,
         pageNo: 1,
-        teamProgress: e.name
+        teamProgress: e.name,
+        directionId: null,
+        matchZone: null,
+        subjectId: null,
+        status: 123,
+        teamNo: null
       }
       this.activeType = e.name
       this.getData()
@@ -156,8 +257,16 @@ export default {
       })
     },
     // 通过
-    pass (row) {
+    async pass (row) {
       console.log('通过:', row)
+      const res = await this.PUT_EDIT_PROCESS({
+        teamProgress: Number(this.activeType) + 1,
+        teamNo: row.teamNo
+      })
+      if (res.result === '0' && res.data) {
+        this.getData()
+        this.$message.success(res.msg)
+      }
     },
     // 获取页面数据
     async getData () {
@@ -174,6 +283,12 @@ export default {
 
 <style lang="scss" scoped>
 .works_list_container {
+  .filter_contain{
+    display: flex;
+    p {
+      width: 15%;
+    }
+  }
   .down_list {
     margin-bottom: 20px;
   }
@@ -202,5 +317,15 @@ export default {
     white-space: nowrap;
     cursor: pointer;
     color: #409EFF;
+  }
+  .filter_contain {
+    p {
+      .el-input--mini, .el-select--mini {
+        width: 70%;
+        .el-input--mini {
+          width: 100%;
+        }
+      }
+    }
   }
 </style>
