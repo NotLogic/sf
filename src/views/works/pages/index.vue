@@ -115,7 +115,7 @@
           <div>
             <p v-for="(item, index) in scope.row.attachments" :key="index">
               <el-tooltip :content="item.attachmentFileName" placement="top">
-                <span @click="getFileDown(item.attachmentId)">{{item.attachmentFileName}}</span>
+                <span @click="getFileDown(item.attachmentId)"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
               </el-tooltip>
             </p>
           </div>
@@ -185,7 +185,10 @@ export default {
     this.getCategory()
   },
   methods: {
-    ...mapActions(['GET_CATEGORYS', 'GET_JUDGE_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    ...mapActions(['PREVIEW_JUDGE_DOWN_FILE', 'GET_CATEGORYS', 'GET_JUDGE_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    async prevewFile (attachmentId) {
+      await this.PREVIEW_JUDGE_DOWN_FILE(attachmentId)
+    },
     async getFileDown (attachmentId) {
       await this.GET_DOWN_FILE(attachmentId)
     },
@@ -270,6 +273,14 @@ export default {
 
 <style lang="scss" scoped>
 .works_list_container {
+  .el-icon-view {
+    margin-right: 5px;
+
+    color: #dc1e32;
+   &:hover {
+      color: #333;
+}
+  }
   .filter_contain{
     display: flex;
     p {

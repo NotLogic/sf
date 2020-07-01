@@ -8,7 +8,7 @@
           <p>作品说明书</p>
           <div v-show="item.attachmentType === 0" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item">{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -16,7 +16,7 @@
           <p>作品介绍</p>
           <div v-show="item.attachmentType === 1" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item">{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -24,7 +24,7 @@
           <p>附件</p>
           <div v-show="item.attachmentType === 2" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item">{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -113,8 +113,8 @@
         }"></el-input>
     </div> -->
     <div class="submit_btn_container">
-      <el-button @click="$router.go(-1)">返回</el-button>
       <el-button type="primary" @click="submit">提交</el-button>
+      <el-button @click="$router.go(-1)">返回</el-button>
     </div>
   </div>
 </template>
@@ -154,7 +154,7 @@ export default {
     this.getTeamDetail()
   },
   methods: {
-    ...mapActions(['GET_JUDGE_TEAM_DETAIL', 'GET_JUDGE_DOWN_FILE', 'POST_JUDGE_SCORE']),
+    ...mapActions(['PREVIEW_JUDGE_DOWN_FILE', 'GET_JUDGE_TEAM_DETAIL', 'GET_JUDGE_DOWN_FILE', 'POST_JUDGE_SCORE']),
     calcScore () {
       let all = 0
       const reg = /(^[0-9]{1,3}$)|(^[0-9]{1,2}[.]{1}[0-9]{1,2}$)/
@@ -164,6 +164,9 @@ export default {
       reg.test(this.practicability) && (all += (this.practicability * 100))
       reg.test(this.innovation) && (all += (this.innovation * 100))
       this.score = all / 100
+    },
+    async prevewFile (attachmentId) {
+      await this.PREVIEW_JUDGE_DOWN_FILE(attachmentId)
     },
     // 下载文件
     async getFileDown (attachmentId) {
@@ -240,6 +243,14 @@ export default {
 
 <style lang="scss" scoped>
 .works_desc_container {
+  .el-icon-view {
+    margin-right: 5px;
+
+    color: #dc1e32;
+   &:hover {
+      color: #333;
+}
+  }
   .submit_btn_container {
     text-align: right;
   }

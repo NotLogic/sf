@@ -118,7 +118,7 @@
           <div>
             <p v-for="(item, index) in scope.row.attachments" :key="index">
               <el-tooltip :content="item.attachmentFileName" placement="top">
-                <span @click="getFileDown(item.attachmentId)">{{item.attachmentFileName}}</span>
+                <span @click="getFileDown(item.attachmentId)"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
               </el-tooltip>
             </p>
           </div>
@@ -194,7 +194,7 @@ export default {
     this.getCategory()
   },
   methods: {
-    ...mapActions(['PUT_EDIT_PROCESS', 'GET_CATEGORYS', 'GET_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
+    ...mapActions(['PREVIEW_DOWN_FILE', 'PUT_EDIT_PROCESS', 'GET_CATEGORYS', 'GET_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
     async getFileDown (attachmentId) {
       await this.GET_DOWN_FILE(attachmentId)
     },
@@ -203,6 +203,10 @@ export default {
     },
     async downloadTeamList () {
       window.open(`${BASE_URL}/admin/team/dowload`)
+    },
+
+    async prevewFile (attachmentId) {
+      await this.PREVIEW_DOWN_FILE(attachmentId)
     },
     // 搜索
     filterSearch () {
@@ -291,6 +295,14 @@ export default {
   }
   .down_list {
     margin-bottom: 20px;
+  }
+  .el-icon-view {
+    margin-right: 5px;
+
+    color: #dc1e32;
+   &:hover {
+      color: #333;
+}
   }
 }
 </style>
