@@ -115,7 +115,7 @@
           <div>
             <p v-for="(item, index) in scope.row.attachments" :key="index">
               <el-tooltip :content="item.attachmentFileName" placement="top">
-                <span @click="getFileDown(item.attachmentId)"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
+                <span @click="getFileDown(item.attachmentId)"><i @click.stop="prevewFile(item.attachmentId, item.attachmentFileName)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
               </el-tooltip>
             </p>
           </div>
@@ -186,7 +186,10 @@ export default {
   },
   methods: {
     ...mapActions(['PREVIEW_JUDGE_DOWN_FILE', 'GET_CATEGORYS', 'GET_JUDGE_TEAM_LIST', 'GET_ACCOUNT_LIST', 'GET_DOWN_FILE']),
-    async prevewFile (attachmentId) {
+    async prevewFile (attachmentId, file) {
+      const patternFileExtension = /.([0-9a-z]+)(?:[?#]|$)/i
+      const fileExtension = (file).match(patternFileExtension)
+      attachmentId = attachmentId + fileExtension[0]
       await this.PREVIEW_JUDGE_DOWN_FILE(attachmentId)
     },
     async getFileDown (attachmentId) {

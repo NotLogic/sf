@@ -8,7 +8,7 @@
           <p>作品说明书</p>
           <div v-show="item.attachmentType === 0" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId, item.attachmentFileName)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -16,7 +16,7 @@
           <p>作品介绍</p>
           <div v-show="item.attachmentType === 1" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId, item.attachmentFileName)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -24,7 +24,7 @@
           <p>附件</p>
           <div v-show="item.attachmentType === 2" v-for="(item, index) in pageData.attachments" :key="index" class="work_name">
             <el-tooltip class="item" effect="dark" :content="item.attachmentFileName" placement="top-start">
-              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
+              <span @click="getFileDown(item.attachmentId)" class="work_item"><i @click.stop="prevewFile(item.attachmentId, item.attachmentFileName)" class="el-icon-view"></i>{{item.attachmentFileName}}</span>
             </el-tooltip>
           </div>
         </div>
@@ -165,7 +165,10 @@ export default {
       reg.test(this.innovation) && (all += (this.innovation * 100))
       this.score = all / 100
     },
-    async prevewFile (attachmentId) {
+    async prevewFile (attachmentId, file) {
+      const patternFileExtension = /.([0-9a-z]+)(?:[?#]|$)/i
+      const fileExtension = (file).match(patternFileExtension)
+      attachmentId = attachmentId + fileExtension[0]
       await this.PREVIEW_JUDGE_DOWN_FILE(attachmentId)
     },
     // 下载文件

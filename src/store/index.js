@@ -77,11 +77,8 @@ export default new Vuex.Store({
     },
     // 预览附件
     async PREVIEW_DOWN_FILE ({ commit }, attachmentId = 0) {
-      const url = '/admin/team/dowload/attachment'
-      let preview = `${BASE_URL}${url}?attachmentId=${attachmentId}`
-      console.log(preview)
-      preview = encodeURIComponent(preview)
-      console.log(preview)
+      const url = '/admin/team/preview/attachment'
+      const preview = `${BASE_URL}${url}/${attachmentId}`
       window.open(`http://47.103.28.48:8012/onlinePreview?url=${preview}`)
     },
     async GET_JUDGE_DOWN_FILE ({ commit }, attachmentId = 0) {
@@ -90,9 +87,8 @@ export default new Vuex.Store({
     },
     // 评委预览附件
     async PREVIEW_JUDGE_DOWN_FILE ({ commit }, attachmentId = 0) {
-      const url = '/judge/team/dowload/attachment'
-      let preview = `${BASE_URL}${url}?attachmentId=${attachmentId}`
-      preview = encodeURIComponent(preview)
+      const url = '/judge/team/preview/attachment'
+      const preview = `${BASE_URL}${url}/${attachmentId}`
       window.open(`http://47.103.28.48:8012/onlinePreview?url=${preview}`)
     },
     // 评委获取队伍列表
