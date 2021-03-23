@@ -222,7 +222,7 @@ export default {
       this.pageForm.matchZone = null
       this.pageForm.subjectId = null
       this.pageForm.teamNo = null
-      this.pageForm.status = 123
+      this.pageForm.status = null
     },
     // 获取类目
     async getCategory () {
@@ -237,7 +237,7 @@ export default {
     // 切换分页
     pageChange (data) {
       this.pageForm.pageNo = data
-      this.pageForm.status = 123
+      this.pageForm.status = null
       this.getData()
     },
     // 切换赛事类型
@@ -249,7 +249,7 @@ export default {
         directionId: null,
         matchZone: null,
         subjectId: null,
-        status: 123,
+        status: null,
         teamNo: null
       }
       this.activeType = e.name
