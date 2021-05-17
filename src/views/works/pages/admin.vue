@@ -237,7 +237,6 @@ export default {
     // 切换分页
     pageChange (data) {
       this.pageForm.pageNo = data
-      this.pageForm.status = null
       this.getData()
     },
     // 切换赛事类型
