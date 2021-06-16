@@ -35,47 +35,81 @@
       <div class="score_main">
         <div class="score_item">
           <div class="source_left">
-            <span class="source_title">方案完整性:</span>
-            <span class="source_sub_title">方案结构完整，切题准确，提供明确的方案解决思路，无明显错误<span class="red_color">(满分15分)</span></span>
+            <el-tooltip class="item" effect="dark" content="优秀（17-20） 通过实际调研收集的数据（或组委会提供）、数据完整，数据对方案有支撑作用
+良好（13-16） 通过实际调研收集的数据（或组委会提供）、数据不完整、数据对方案有支撑作用
+一般（9-12） 无实际的调研，组委会提供数据、数据对方案有支撑作用
+较差（5-8） 无实际的调研，组委会提供数据+网上复制数据，数据对方案有支撑作用
+差（1-4） 无实际的调研，组委会提供数据+网上复制数据，数据对方案无支撑作用" placement="top-start">
+              <span class="source_title">数据采集与分析:</span>
+            </el-tooltip>
+            <!-- <span class="source_title">数据采集与分析:</span> -->
+            <span class="source_sub_title">数据采集信息准确有效，对方案设计有支撑作用，数据完整<span class="red_color">(满分20分)</span></span>
           </div>
           <div class="source_right">
-            <el-input @blur="calcScore" type="number" v-model="integrity" placeholder="方案完整性"></el-input>
+            <el-input @blur="calcScore" type="number" v-model="integrity" placeholder="数据采集与分析(请输入整数)"></el-input>
           </div>
         </div>
         <div class="score_item">
           <div class="source_left">
-            <span class="source_title">数据有效性:</span>
-            <span class="source_sub_title">数据信息准确有效，对方案设计有支撑作用<span class="red_color">(满分15分)</span></span>
+            <el-tooltip class="item" effect="dark" content="优秀（17-20） 切题准确，完整作品要包括：课题、摘要、关键词、目录、研究过程说明、创新点与价值说明+ PPT作品介绍
+良好（13-16） 切题准确，少了（课题、摘要、关键词、目录、），但是有+研究过程说明、创新点与价值说明+PPT作品介绍
+一般（9-12） 切题准确，少了（研究过程）但是有PPT作品介绍
+较差（5-8） 切题不准，少了（研究过程）+无 PPT作品介绍
+差（1-4） 切题不准，少了（研究过程、创新点与价值说明）+无 PPT作品介绍" placement="top-start">
+            <span class="source_title">完整性:</span>
+            </el-tooltip>
+            <span class="source_sub_title">方案结构完整，切题准确，提供明确的方案解决思路，无明显错误<span class="red_color">(满分20分)</span></span>
           </div>
           <div class="source_right">
-            <el-input @blur="calcScore" type="number" v-model="effect" placeholder="数据有效性"></el-input>
+            <el-input @blur="calcScore" type="number" v-model="effect" placeholder="完整性(请输入整数)"></el-input>
           </div>
         </div>
         <div class="score_item">
           <div class="source_left">
-            <span class="source_title">方案设计科学性:</span>
-            <span class="source_sub_title">有明确、适用的设计方法，采用了定性和定量手段,设计方法科学、严谨<span class="red_color">(满分20分)</span></span>
+            <el-tooltip class="item" effect="dark" content="优秀（17-20） 可以直接运用到业务场景
+良好（13-16） 简单指导后可以运用到业务场景
+一般（9-12） 方案依据充分，但没有联系实际情况，无法落地
+较差（5-8） 方案无依据有逻辑，无法落地
+差（1-4） 方案嗷毫无逻辑，无法落地" placement="top-start">
+              <span class="source_title">实用性:</span>
+            </el-tooltip>
+            <!-- <span class="source_title">实用性:</span> -->
+            <span class="source_sub_title">方案依据充分，联系实际情况，可落地实施<span class="red_color">(满分20分)</span></span>
           </div>
           <div class="source_right">
-            <el-input @blur="calcScore" type="number" v-model="scientificity" placeholder="方案设计科学性"></el-input>
+            <el-input @blur="calcScore" type="number" v-model="practicability" placeholder="实用性(请输入整数)"></el-input>
           </div>
         </div>
         <div class="score_item">
           <div class="source_left">
-            <span class="source_title">方案实用性:</span>
-            <span class="source_sub_title">方案依据充分，联系实际情况，可落地实施<span class="red_color">(满分25分)</span></span>
+            <el-tooltip class="item" effect="dark" content="优秀（17-20） 创新理念，亮点突出
+良好（13-16） 创新理念，亮点不突出
+一般（9-12） 无创新，但是亮点突出
+较差（5-8） 无创新，无亮点
+差（1-4） 无创新，无亮点" placement="top-start">
+              <span class="source_title">创新性:</span>
+            </el-tooltip>
+            <!-- <span class="source_title">创新性:</span> -->
+            <span class="source_sub_title">方案存在创新理念，亮点突出<span class="red_color">(满分20分)</span></span>
           </div>
           <div class="source_right">
-            <el-input @blur="calcScore" type="number" v-model="practicability" placeholder="方案实用性"></el-input>
+            <el-input v-model="innovation" type="number" @blur="calcScore" placeholder="创新性(请输入整数)"></el-input>
           </div>
         </div>
         <div class="score_item">
           <div class="source_left">
-            <span class="source_title">方案创新性:</span>
-            <span class="source_sub_title">方案存在创新理念，亮点突出<span class="red_color">(满分25分)</span></span>
+            <el-tooltip class="item" effect="dark" content="优秀（17-20） 潜在价值很高，有意向签订版权
+良好（13-16） 潜在价值较高高，希望该组学生来顺丰实习，指导再探讨
+一般（9-12） 潜在价值一般，有亮点
+较差（5-8） 无价值，照搬其他人理念
+差（1-4） 无价值，照搬其他人理念" placement="top-start">
+              <span class="source_title">潜在价值:</span>
+            </el-tooltip>
+            <span class="source_title">潜在价值:</span>
+            <span class="source_sub_title">方案的发展前景评估<span class="red_color">(满分20分)</span></span>
           </div>
           <div class="source_right">
-            <el-input v-model="innovation" @blur="calcScore" placeholder="方案创新性"></el-input>
+            <el-input @blur="calcScore" type="number" v-model="scientificity" placeholder="潜在价值(请输入整数)"></el-input>
           </div>
         </div>
         <div class="score_item">
@@ -129,20 +163,21 @@ export default {
   data () {
     return {
       // 页面数据
-      pageData: '',
+      // pageData: { teamNo: '0015', progress: null, comments: null, totalScore: null, scoreDimensions: [], attachments: [{ attachmentId: 2069, attachmentType: 2, attachmentFileName: '大四喜对0015-附件.zip' }, { attachmentId: 2070, attachmentType: 0, attachmentFileName: '大四喜对0015-队伍介绍.docx' }, { attachmentId: 2110, attachmentType: 1, attachmentFileName: '大四喜对0015 规划方案及PPT展示.zip' }] },
+      pageData: {},
       submitForm: {
         level: ''
       },
       // 创新性
-      integrity: '',
+      integrity: null,
       // 实用性
-      effect: '',
+      effect: null,
       // 安全性
-      scientificity: '',
+      scientificity: null,
       // 通用性
-      practicability: '',
+      practicability: null,
       // 价值
-      innovation: '',
+      innovation: null,
       // 评语
       comments: '',
       // 总分
@@ -157,13 +192,49 @@ export default {
     ...mapActions(['PREVIEW_JUDGE_DOWN_FILE', 'GET_JUDGE_TEAM_DETAIL', 'GET_JUDGE_DOWN_FILE', 'POST_JUDGE_SCORE']),
     calcScore () {
       let all = 0
-      const reg = /(^[0-9]{1,3}$)|(^[0-9]{1,2}[.]{1}[0-9]{1,2}$)/
-      reg.test(this.integrity) ? (all = this.integrity * 100) : all = 0
-      reg.test(this.effect) && (all += (this.effect * 100))
-      reg.test(this.scientificity) && (all += (this.scientificity * 100))
-      reg.test(this.practicability) && (all += (this.practicability * 100))
-      reg.test(this.innovation) && (all += (this.innovation * 100))
-      this.score = all / 100
+      // const reg = /(^[0-9]{1,3}$)|(^[0-9]{1,2}[.]{1}[0-9]{1,2}$)/
+      const reg = /^[0-9]*$/
+      if (reg.test(this.integrity)) {
+        all += Number(this.integrity)
+      } else {
+        this.integrity = 0
+        all += 0
+        this.score = all
+        return
+      }
+      if (reg.test(this.effect)) {
+        all += Number(this.effect)
+      } else {
+        this.effect = 0
+        all += 0
+        this.score = all
+        return
+      }
+      if (reg.test(this.practicability)) {
+        all += Number(this.practicability)
+      } else {
+        this.practicability = 0
+        all += 0
+        this.score = all
+        return
+      }
+      if (reg.test(this.innovation)) {
+        all += Number(this.innovation)
+      } else {
+        this.innovation = 0
+        all += 0
+        this.score = all
+        return
+      }
+      if (reg.test(this.scientificity)) {
+        all += Number(this.scientificity)
+      } else {
+        this.scientificity = 0
+        all += 0
+        this.score = all
+        return
+      }
+      this.score = all
     },
     async prevewFile (attachmentId, file) {
       const patternFileExtension = /.([0-9a-z]+)(?:[?#]|$)/i
@@ -193,24 +264,24 @@ export default {
     },
     // 提交
     async submit () {
-      if (!this.integrity) {
-        this.$message.error('请填写方案完整性评分')
+      if (this.integrity === null || Number(this.integrity) > 20) {
+        this.$message.error('请填写分数小于20的数据采集与分析')
         return
       }
-      if (!this.effect) {
-        this.$message.error('请填写数据有效性')
+      if (this.effect === null || Number(this.effect) > 20) {
+        this.$message.error('请填写分数小于20的完整性')
         return
       }
-      if (!this.scientificity) {
-        this.$message.error('请填写方案设计科学性')
+      if (this.practicability === null || Number(this.practicability) > 20) {
+        this.$message.error('请填写分数小于20的实用性')
         return
       }
-      if (!this.practicability) {
-        this.$message.error('请填写方案实用性')
+      if (this.innovation === null || Number(this.innovation) > 20) {
+        this.$message.error('请填写分数小于20的创新性')
         return
       }
-      if (!this.innovation) {
-        this.$message.error('请填写方案创新性')
+      if (this.scientificity === null || Number(this.scientificity) > 20) {
+        this.$message.error('请填写分数小于20的潜在价值')
         return
       }
       const arr = ['integrity', 'effect', 'scientificity', 'practicability', 'innovation']
@@ -309,7 +380,9 @@ export default {
       .source_left {
         width: 70%;
       }
-      .source_right {}
+      .source_right {
+        width: 20%;
+      }
     }
   }
   .radio_Container {
@@ -333,5 +406,8 @@ input[type="number"]{
 }
 .text_area {
   width: 300px;
+}
+.el-tooltip__popper {
+  width: 600px!important;
 }
 </style>
