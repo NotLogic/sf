@@ -55,7 +55,7 @@ axios.interceptors.response.use(
     const code = error.response.status
     console.log(error.response)
     if (code === 401) {
-      router.push('/')
+      router.push('/judgeLogin')
     }
     Message({
       message: msg,
